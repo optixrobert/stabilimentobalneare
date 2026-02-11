@@ -10,6 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// 0. User (Multi-tenancy)
+model User {
+  id                    String                @id @default(uuid())
+  email                 String                @unique
+  password              String
+  name                  String?
+  createdAt             DateTime              @default(now())
+  
+  // Relations
+  establishmentSettings EstablishmentSettings?
+  beachPriceRules       BeachPriceRule[]
+  serviceItems          ServiceItem[]
+  umbrellaSpots         UmbrellaSpot[]
+  transactions          Transaction[]
+
+  @@map("users")
+}
+
 // 1. Establishment Settings
 model EstablishmentSettings {
   id        String   @id @default(uuid())
@@ -18,6 +36,9 @@ model EstablishmentSettings {
   cols      Int      @default(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("establishment_settings")
 }
@@ -25,10 +46,15 @@ model EstablishmentSettings {
 // 2. Beach Price Rules
 model BeachPriceRule {
   id         String   @id @default(uuid())
-  rowLabel   String   @unique
+  rowLabel   String
   dailyPrice Decimal  @default(0.00)
   createdAt  DateTime @default(now())
 
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Compound unique constraint: a row label must be unique per user
+  @@unique([userId, rowLabel])
   @@map("beach_price_rules")
 }
 
@@ -41,12 +67,31 @@ model ServiceItem {
   available Boolean  @default(true)
   createdAt DateTime @default(now())
 
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("service_items")
 }
 
 // 4. Umbrella Spots
 model UmbrellaSpot {
-  id        String   @id // Manual ID like "A1", "B2"
+  id        String   @id // Manual ID like "A1", "B2" - Note: ID must be unique globally? 
+                       // Issue: "A1" for User1 is different from "A1" for User2. 
+                       // Solution: Composite ID or UUID. Let's switch to UUID and keep "label" as A1.
+                       // OR: make ID = userId_row_col. 
+                       // Simplest for now: Use UUID for ID, and add row/number. 
+                       // BUT: Front end expects ID to be "A1".
+                       // To support multi-tenancy with "A1" ids, we need to scope them.
+                       // Actually, let's keep ID as UUID to be safe, but frontend uses it as key.
+                       // Wait, frontend generates ID as "A1".
+                       // If we stick to ID="A1", we can't have two users with "A1".
+                       // CHANGE: ID should be UUID. Frontend "id" should be treated as "label" or we generate a composite.
+                       // Let's use a composite ID approach conceptually, but Prisma needs a single ID for SQLite (or composite PK).
+                       // Let's change ID to String @default(uuid()) and add `code` field for "A1".
+
+  // We will change ID to be a UUID.
+  // The "A1" identifier will be stored in `gridCode`.
+  
   rowLabel  String
   number    Int
   status    String   @default("free") // 'free', 'occupied', 'reserved'
@@ -54,6 +99,10 @@ model UmbrellaSpot {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, rowLabel, number]) // Ensure unique spot per user
   @@map("umbrella_spots")
 }
 
@@ -65,6 +114,9 @@ model Transaction {
   paymentMethod String            // 'cash', 'card'
   items         TransactionItem[]
   createdAt     DateTime          @default(now())
+
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("transactions")
 }

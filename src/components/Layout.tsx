@@ -1,11 +1,13 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Umbrella, Coffee, Settings, Menu, Store, Receipt } from 'lucide-react';
+import { LayoutDashboard, Umbrella, Coffee, Settings, Menu, Store, Receipt, LogOut } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useAuth } from '../context/AuthContext';
 
 const Layout: React.FC = () => {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const { logout, user } = useAuth();
 
   const navItems = [
     { path: '/app', label: 'Dashboard', icon: LayoutDashboard },
@@ -52,6 +54,25 @@ const Layout: React.FC = () => {
             </Link>
           ))}
         </nav>
+
+        {/* Logout Section */}
+        <div className="p-4 border-t">
+          <button
+            onClick={logout}
+            className={clsx(
+              "flex items-center gap-3 p-3 rounded-lg transition-colors w-full text-left",
+              "text-red-600 hover:bg-red-50"
+            )}
+          >
+            <LogOut size={20} />
+            {isSidebarOpen && <span>Esci</span>}
+          </button>
+          {isSidebarOpen && user && (
+            <div className="mt-2 text-xs text-gray-500 px-3 truncate">
+              {user.name}
+            </div>
+          )}
+        </div>
       </aside>
 
       {/* Main Content */}
