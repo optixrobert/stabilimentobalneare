@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
   user?: {
     userId: string;
     email: string;
+    role: string;
   };
 }
 
@@ -30,6 +31,14 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   });
 };
 
-export const generateToken = (userId: string, email: string) => {
-  return jwt.sign({ userId, email }, JWT_SECRET, { expiresIn: '24h' });
+export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+  if (req.user?.role !== 'admin') {
+    res.status(403).json({ error: 'Admin access required' });
+    return;
+  }
+  next();
+};
+
+export const generateToken = (userId: string, email: string, role: string = 'user') => {
+  return jwt.sign({ userId, email, role }, JWT_SECRET, { expiresIn: '24h' });
 };

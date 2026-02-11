@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import authRoutes from './routes/auth';
+import adminRoutes from './routes/admin';
 import { authenticateToken, AuthRequest } from './middleware/auth';
 
 const app = express();
@@ -17,6 +18,9 @@ app.use('/api/auth', authRoutes);
 // Protected Routes
 // All routes below this line require a valid JWT token
 app.use('/api', authenticateToken);
+
+// Admin Routes
+app.use('/api/admin', adminRoutes);
 
 // --- Protected API Endpoints (User Scoped) ---
 

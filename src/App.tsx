@@ -9,6 +9,7 @@ import Transactions from './pages/Transactions';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="services" element={<Services />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="admin" element={<AdminDashboard />} />
           <Route path="*" element={<Navigate to="/app" replace />} />
         </Route>
       </Route>

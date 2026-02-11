@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Umbrella, Coffee, Settings, Menu, Store, Receipt, LogOut } from 'lucide-react';
+import { LayoutDashboard, Umbrella, Coffee, Settings, Menu, Store, Receipt, LogOut, Shield } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
 
@@ -17,6 +17,10 @@ const Layout: React.FC = () => {
     { path: '/app/transactions', label: 'Transazioni', icon: Receipt },
     { path: '/app/settings', label: 'Impostazioni', icon: Settings },
   ];
+
+  if (user?.role === 'admin') {
+    navItems.push({ path: '/app/admin', label: 'Admin Panel', icon: Shield });
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
