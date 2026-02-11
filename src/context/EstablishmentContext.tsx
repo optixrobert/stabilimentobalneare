@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
 import { useAuth } from './AuthContext';
-
-const API_URL = 'http://localhost:3001/api';
+import { API_URL } from '../config';
 
 export interface BeachPriceRule {
   rowLabel: string;

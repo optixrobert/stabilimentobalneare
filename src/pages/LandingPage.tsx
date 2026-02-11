@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Umbrella, Store, Smartphone, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react';
+import { Umbrella, Store, Smartphone, TrendingUp, CheckCircle, ArrowRight, MousePointer2, Receipt, Calendar } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
   return (
@@ -36,6 +36,9 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-in slide-in-from-left duration-700">
+              <div className="inline-block bg-blue-100 text-blue-800 px-4 py-1.5 rounded-full text-sm font-semibold mb-2">
+                Già scelto da 50+ stabilimenti in Italia
+              </div>
               <h1 className="text-5xl lg:text-7xl font-black text-gray-900 leading-tight">
                 Il futuro del tuo <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
@@ -47,49 +50,47 @@ const LandingPage: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
-                  to="/app" 
-                  className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-center flex items-center justify-center gap-2"
+                  to="/signup" 
+                  className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-300 flex items-center justify-center gap-2 text-lg"
                 >
-                  Inizia Gratuitamente <ArrowRight size={20} />
+                  Prova la demo gratuita <ArrowRight size={20} />
                 </Link>
-                <button className="px-8 py-4 bg-white text-gray-700 border-2 border-gray-100 rounded-xl font-bold text-lg hover:border-gray-300 hover:bg-gray-50 transition-all text-center">
-                  Guarda il Video
-                </button>
+                <Link 
+                  to="/login"
+                  className="bg-white text-gray-700 border-2 border-gray-200 px-8 py-4 rounded-xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all flex items-center justify-center text-lg"
+                >
+                  Accedi
+                </Link>
               </div>
-              <div className="flex items-center gap-4 text-sm text-gray-500 pt-4">
-                <div className="flex -space-x-2">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white"></div>
-                  ))}
+              <div className="pt-4 flex items-center gap-6 text-sm text-gray-500 font-medium">
+                <span className="flex items-center gap-2"><CheckCircle size={16} className="text-green-500"/> Setup in 2 minuti</span>
+                <span className="flex items-center gap-2"><CheckCircle size={16} className="text-green-500"/> Nessuna carta richiesta</span>
+              </div>
+            </div>
+
+            <div className="relative animate-in slide-in-from-right duration-700 delay-200">
+              <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-3 opacity-10"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2070&auto=format&fit=crop" 
+                alt="Lido Manager Dashboard" 
+                className="rounded-xl w-full h-auto object-cover shadow-2xl border border-gray-100 relative z-10"
+              />
+              
+              {/* Floating Card */}
+              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-4 animate-bounce z-20">
+                <div className="bg-green-100 p-3 rounded-full text-green-600">
+                  <TrendingUp size={24} />
                 </div>
-                <p>Già scelto da <strong>50+</strong> stabilimenti in Italia</p>
+                <div>
+                  <p className="text-xs text-gray-500 font-bold uppercase">Incasso Oggi</p>
+                  <p className="text-xl font-bold text-gray-900">+24%</p>
+                </div>
               </div>
             </div>
             
-            <div className="relative animate-in slide-in-from-right duration-700 delay-200">
-              <div className="bg-white p-4 rounded-2xl shadow-2xl border border-gray-100 relative z-10 rotate-2 hover:rotate-0 transition-transform duration-500">
-                <img 
-                  src="https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&q=80&w=2070" 
-                  alt="Beach Management Dashboard" 
-                  className="rounded-xl w-full h-auto object-cover"
-                />
-                
-                {/* Floating Card */}
-                <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-4 animate-bounce">
-                  <div className="bg-green-100 p-3 rounded-full text-green-600">
-                    <TrendingUp size={24} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 font-bold uppercase">Incasso Oggi</p>
-                    <p className="text-xl font-bold text-gray-900">+24%</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Decorative Elements */}
-              <div className="absolute top-10 -right-10 w-24 h-24 bg-yellow-400 rounded-full blur-3xl opacity-20"></div>
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-600 rounded-full blur-3xl opacity-20"></div>
-            </div>
+            {/* Decorative Elements */}
+            <div className="absolute top-10 -right-10 w-24 h-24 bg-yellow-400 rounded-full blur-3xl opacity-20"></div>
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-600 rounded-full blur-3xl opacity-20"></div>
           </div>
         </div>
       </section>
@@ -105,17 +106,17 @@ const LandingPage: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard 
-              icon={<Umbrella className="text-blue-600" size={32} />}
+              icon={<MousePointer2 size={32} className="text-blue-600" />}
               title="Mappa Interattiva"
               description="Gestisci visivamente la tua spiaggia. Assegna ombrelloni, lettini e verifica le disponibilità in tempo reale."
             />
             <FeatureCard 
-              icon={<Store className="text-purple-600" size={32} />}
+              icon={<Receipt size={32} className="text-purple-600" />}
               title="Punto Cassa Smart"
               description="Interfaccia touch veloce per bar e ristorante. Gestisci ordini, pagamenti e stampa scontrini in un click."
             />
             <FeatureCard 
-              icon={<Smartphone className="text-green-600" size={32} />}
+              icon={<Calendar size={32} className="text-orange-600" />}
               title="Prenotazioni Online"
               description="Permetti ai tuoi clienti di prenotare l'ombrellone direttamente dal loro smartphone, 24/7."
             />
@@ -123,21 +124,23 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-24 bg-white">
+      {/* Value Proposition */}
+      <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1 relative">
-               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-3xl transform rotate-3 opacity-10"></div>
-               <img 
-                 src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=2070" 
-                 alt="Relax on beach" 
-                 className="rounded-3xl shadow-2xl relative z-10 w-full"
-               />
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <img 
+                src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop" 
+                alt="Relax on beach" 
+                className="rounded-2xl shadow-xl"
+              />
             </div>
-            <div className="order-1 lg:order-2 space-y-8">
-              <h3 className="text-4xl font-black text-gray-900">Meno stress,<br/>più tempo per i tuoi clienti.</h3>
-              <p className="text-lg text-gray-600">
+            <div className="space-y-8">
+              <h2 className="text-4xl font-black text-gray-900">
+                Meno stress, <br/>
+                <span className="text-blue-600">più tempo per i tuoi clienti.</span>
+              </h2>
+              <p className="text-lg text-gray-600 leading-relaxed">
                 Lido Manager automatizza i compiti ripetitivi e riduce gli errori. Dedica più tempo all'accoglienza e meno alla burocrazia.
               </p>
               
@@ -147,30 +150,40 @@ const LandingPage: React.FC = () => {
                 <BenefitItem text="Report dettagliati su incassi e presenze" />
                 <BenefitItem text="Supporto dedicato 7 giorni su 7" />
               </div>
+
+              <div className="pt-4">
+                 <Link 
+                  to="/signup" 
+                  className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 text-lg"
+                >
+                  Inizia ora <ArrowRight className="ml-2" size={20} />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600 text-white overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-black mb-6">Pronto a trasformare il tuo lido?</h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+      <section className="py-20 bg-blue-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 text-center space-y-8">
+          <h2 className="text-4xl lg:text-5xl font-black">Pronto a trasformare il tuo lido?</h2>
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
             Unisciti agli imprenditori balneari che hanno già scelto l'innovazione. Prova la demo gratuita oggi stesso.
           </p>
-          <Link 
-            to="/app" 
-            className="inline-flex items-center gap-3 bg-white text-blue-700 px-10 py-5 rounded-full font-bold text-xl hover:bg-blue-50 hover:scale-105 transition-all shadow-2xl"
-          >
-            Accedi alla Piattaforma <ArrowRight size={24} />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <Link 
+              to="/signup" 
+              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg"
+            >
+              Crea Account Gratuito
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12">
+      <footer className="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 text-white mb-4">
@@ -178,7 +191,7 @@ const LandingPage: React.FC = () => {
               <span className="text-xl font-bold">Lido Manager</span>
             </div>
             <p className="text-sm">
-              Il software gestionale N.1 per stabilimenti balneari in Italia. Semplice, potente, affidabile.
+              Il software gestionale N.1 per stabilimenti balneari in Italia.
             </p>
           </div>
           <div>
@@ -186,7 +199,7 @@ const LandingPage: React.FC = () => {
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="hover:text-white transition-colors">Funzionalità</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Prezzi</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Hardware</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Roadmap</a></li>
             </ul>
           </div>
           <div>
@@ -194,19 +207,14 @@ const LandingPage: React.FC = () => {
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="hover:text-white transition-colors">Chi Siamo</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Contatti</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Lavora con noi</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-bold mb-4">Legale</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Termini di Servizio</a></li>
-            </ul>
+            <h4 className="text-white font-bold mb-4">Contatti</h4>
+            <p className="text-sm">info@iltuostabilimentobalneare.com</p>
+            <p className="text-sm">+39 02 12345678</p>
           </div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-gray-800 text-center text-sm">
-          © {new Date().getFullYear()} Lido Manager. Tutti i diritti riservati.
         </div>
       </footer>
     </div>
@@ -225,7 +233,9 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
 
 const BenefitItem = ({ text }: { text: string }) => (
   <div className="flex items-center gap-3">
-    <CheckCircle className="text-green-500 shrink-0" size={24} />
+    <div className="bg-green-100 p-1 rounded-full">
+      <CheckCircle className="text-green-600 shrink-0" size={16} />
+    </div>
     <span className="text-lg text-gray-700 font-medium">{text}</span>
   </div>
 );

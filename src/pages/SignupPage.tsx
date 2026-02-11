@@ -1,18 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Store, User, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
-
-const API_URL = 'http://localhost:3001/api';
+import { Store, User, Lock, Mail, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
+import { API_URL } from '../config';
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [captchaAnswer, setCaptchaAnswer] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaSvg, setCaptchaSvg] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const fetchCaptcha = async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/captcha`);
+      const data = await res.json();
+      setCaptchaSvg(data.image);
+      setCaptchaToken(data.token);
+      setCaptchaAnswer('');
+    } catch (err) {
+      console.error('Failed to load captcha', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,12 +41,14 @@ const SignupPage: React.FC = () => {
       const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, captchaAnswer, captchaToken }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        // Refresh captcha on error
+        fetchCaptcha();
         throw new Error(data.error || 'Registration failed');
       }
 
@@ -118,7 +138,7 @@ const SignupPage: React.FC = () => {
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="new-password"
+                  autoComplete="current-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -126,6 +146,35 @@ const SignupPage: React.FC = () => {
                   placeholder="••••••••"
                 />
               </div>
+            </div>
+
+            {/* CAPTCHA Section */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Verifica di sicurezza
+              </label>
+              <div className="flex gap-4 items-center mb-3">
+                <div 
+                  className="bg-gray-100 p-2 rounded border border-gray-300 select-none"
+                  dangerouslySetInnerHTML={{ __html: captchaSvg }}
+                />
+                <button
+                  type="button"
+                  onClick={fetchCaptcha}
+                  className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                  title="Ricarica Captcha"
+                >
+                  <RefreshCw className="h-5 w-5" />
+                </button>
+              </div>
+              <input
+                type="text"
+                required
+                value={captchaAnswer}
+                onChange={(e) => setCaptchaAnswer(e.target.value)}
+                className="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 border px-3"
+                placeholder="Inserisci i caratteri dell'immagine"
+              />
             </div>
 
             {error && (

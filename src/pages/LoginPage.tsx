@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Store, User, Lock, ArrowRight, Loader2 } from 'lucide-react';
-
-const API_URL = 'http://localhost:3001/api';
+import { API_URL } from '../config';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');

@@ -1,18 +1,57 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import svgCaptcha from 'svg-captcha';
 import { PrismaClient } from '@prisma/client';
 import { generateToken } from '../middleware/auth';
 
 const router = express.Router();
 const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-change-this';
+
+// GET /api/auth/captcha
+router.get('/captcha', (req, res) => {
+  const captcha = svgCaptcha.create({
+    size: 5,
+    noise: 2,
+    color: true,
+    background: '#cc9966'
+  });
+  
+  const signedToken = jwt.sign({ 
+    captcha: captcha.text.toLowerCase() 
+  }, JWT_SECRET, { expiresIn: '5m' });
+
+  res.json({
+    image: captcha.data,
+    token: signedToken
+  });
+});
 
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, captchaAnswer, captchaToken } = req.body;
 
   if (!email || !password) {
     res.status(400).json({ error: 'Email and password are required' });
     return;
+  }
+
+  // Verify Captcha
+  if (!captchaAnswer || !captchaToken) {
+    res.status(400).json({ error: 'Captcha verification is required' });
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(captchaToken, JWT_SECRET) as { captcha: string };
+    if (decoded.captcha !== captchaAnswer.toLowerCase()) {
+       res.status(400).json({ error: 'Incorrect captcha' });
+       return;
+    }
+  } catch (err) {
+     res.status(400).json({ error: 'Invalid or expired captcha' });
+     return;
   }
 
   try {

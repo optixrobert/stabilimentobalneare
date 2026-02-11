@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Trash2, Shield, User, LayoutGrid, DollarSign } from 'lucide-react';
+import { API_URL } from '../config';
 
 interface UserData {
   id: string;
@@ -29,7 +30,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/admin/users', {
+      const response = await fetch(`${API_URL}/admin/users`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
     if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/api/admin/users/${userId}`, {
+      const response = await fetch(`${API_URL}/admin/users/${userId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
     if (!confirm(`Change role to ${newRole}?`)) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/api/admin/users/${userId}/role`, {
+      const response = await fetch(`${API_URL}/admin/users/${userId}/role`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
