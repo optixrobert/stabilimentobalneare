@@ -8,12 +8,12 @@ const Layout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/pos', label: 'Cassa Touch', icon: Store },
-    { path: '/map', label: 'Mappa Spiaggia', icon: Umbrella },
-    { path: '/services', label: 'Servizi', icon: Coffee },
-    { path: '/transactions', label: 'Transazioni', icon: Receipt },
-    { path: '/settings', label: 'Impostazioni', icon: Settings },
+    { path: '/app', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/app/pos', label: 'Cassa Touch', icon: Store },
+    { path: '/app/map', label: 'Mappa Spiaggia', icon: Umbrella },
+    { path: '/app/services', label: 'Servizi', icon: Coffee },
+    { path: '/app/transactions', label: 'Transazioni', icon: Receipt },
+    { path: '/app/settings', label: 'Impostazioni', icon: Settings },
   ];
 
   return (
