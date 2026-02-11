@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 1. Establishment Settings
+model EstablishmentSettings {
+  id        String   @id @default(uuid())
+  name      String   @default("Lido Manager")
+  rows      Int      @default(6)
+  cols      Int      @default(10)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("establishment_settings")
+}
+
+// 2. Beach Price Rules
+model BeachPriceRule {
+  id         String   @id @default(uuid())
+  rowLabel   String   @unique
+  dailyPrice Decimal  @default(0.00)
+  createdAt  DateTime @default(now())
+
+  @@map("beach_price_rules")
+}
+
+// 3. Service Menu Items
+model ServiceItem {
+  id        String   @id @default(uuid())
+  name      String
+  category  String   // 'bar', 'restaurant', 'service', 'other'
+  price     Decimal
+  available Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("service_items")
+}
+
+// 4. Umbrella Spots
+model UmbrellaSpot {
+  id        String   @id // Manual ID like "A1", "B2"
+  rowLabel  String
+  number    Int
+  status    String   @default("free") // 'free', 'occupied', 'reserved'
+  sunbeds   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("umbrella_spots")
+}
+
+// 5. Transactions
+model Transaction {
+  id            String            @id @default(uuid())
+  date          DateTime          @default(now())
+  total         Decimal
+  paymentMethod String            // 'cash', 'card'
+  items         TransactionItem[]
+  createdAt     DateTime          @default(now())
+
+  @@map("transactions")
+}
+
+// 6. Transaction Items
+model TransactionItem {
+  id            String      @id @default(uuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  name          String
+  price         Decimal
+  quantity      Int         @default(1)
+  type          String      // 'product', 'umbrella', 'service'
+  createdAt     DateTime    @default(now())
+
+  @@map("transaction_items")
+}
