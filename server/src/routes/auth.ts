@@ -31,9 +31,10 @@ router.post('/signup', async (req, res) => {
         // Create default settings for new user
         establishmentSettings: {
           create: {
-            name: `${name || 'My'} Beach`,
+            name: name || 'My Beach',
             rows: 6,
-            cols: 10
+            cols: 10,
+            isSetupCompleted: false
           }
         }
       }

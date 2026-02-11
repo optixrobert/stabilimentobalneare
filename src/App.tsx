@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AdminDashboard from './pages/AdminDashboard';
+import OnboardingPage from './pages/OnboardingPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
       {/* Protected App Routes */}
       <Route path="/app" element={<ProtectedRoute />}>
+        <Route path="onboarding" element={<OnboardingPage />} />
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="pos" element={<POS />} />

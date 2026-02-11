@@ -29,6 +29,10 @@ interface EstablishmentSettings {
   name: string;
   rows: number;
   cols: number;
+  address?: string;
+  city?: string;
+  phone?: string;
+  isSetupCompleted?: boolean;
 }
 
 export interface TransactionItem {
@@ -147,10 +151,14 @@ export const EstablishmentProvider: React.FC<{ children: ReactNode }> = ({ child
         if (settingsRes.ok) {
           const settingsData = await settingsRes.json();
           setSettings({
-            name: settingsData.name,
-            rows: settingsData.rows,
-            cols: settingsData.cols
-          });
+                name: settingsData.name,
+                rows: settingsData.rows,
+                cols: settingsData.cols,
+                address: settingsData.address,
+                city: settingsData.city,
+                phone: settingsData.phone,
+                isSetupCompleted: settingsData.isSetupCompleted
+              });
 
           // 2. Fetch Umbrellas (after settings to know size, or just fetch all)
           const umbrellasRes = await fetch(`${API_URL}/umbrellas`, { headers });
