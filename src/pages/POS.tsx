@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useEstablishment, type ServiceItem, type UmbrellaSpot } from '../context/EstablishmentContext';
-import { ShoppingCart, Coffee, Umbrella, Trash2, CreditCard, Plus, Minus, Search, Ship } from 'lucide-react';
+import { useEstablishment } from '../context/EstablishmentContext';
+import { ShoppingCart, Coffee, Umbrella, Trash2, Plus, Minus, Search, Ship, CreditCard } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface CartItem {
@@ -18,7 +18,6 @@ const POS: React.FC = () => {
     umbrellaSpots, 
     getUmbrellaPrice, 
     updateUmbrellaStatus,
-    settings,
     addTransaction
   } = useEstablishment();
 

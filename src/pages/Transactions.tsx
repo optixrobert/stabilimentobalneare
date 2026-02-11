@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEstablishment } from '../context/EstablishmentContext';
-import { Banknote, TrendingUp, Calendar, ShoppingBag, ArrowUpRight } from 'lucide-react';
+import { Banknote, TrendingUp, Calendar, ShoppingBag } from 'lucide-react';
 import { clsx } from 'clsx';
 
 const Transactions: React.FC = () => {
@@ -12,10 +12,6 @@ const Transactions: React.FC = () => {
   const todaysTransactions = transactions.filter(t => t.date.startsWith(today));
   const todaysTotal = todaysTransactions.reduce((sum, t) => sum + t.total, 0);
   
-  const totalItemsSold = todaysTransactions.reduce((sum, t) => 
-    sum + t.items.reduce((acc, item) => acc + item.quantity, 0)
-  , 0);
-
   const averageTransaction = todaysTransactions.length > 0 
     ? todaysTotal / todaysTransactions.length 
     : 0;
